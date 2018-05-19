@@ -1,0 +1,198 @@
+---
+title: "project2"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+```{r, echo=FALSE}
+library(tidyverse)
+library(ggplot2)
+Fortnite_BR_Weapon_Attributes <- read.csv('Fortnite_BR_Weapon_Attributes.csv')
+Fortnite_BR_Weapon_Attributes %>% 
+  inner_join(Fortnite_BR_Weapon_Attributes, by = "Rarity")
+```
+Our data shows the attributes of weapons in fortnite battle royale. It was found on kaggle (https://www.kaggle.com/jruots/fortnite-battle-royale-weapon-attributes/data) and contains the variables DPS (damage per second),Damage,Critical %,Crit. Damage,Fire Rate,Mag. Size,Range,Durability,Reload Time,Ammo Cost,Impact,Rarity,Type, for each of the weapon types. Although, many of these variables were not given meaningful values. Critical %, Crit. Damage, durability, and ammo cost were all given the same value of 0 or 1, which is statistically meaningless. The DPS variable did not always function correctly 
+```{r echo = FALSE}
+ARData <- Fortnite_BR_Weapon_Attributes %>% 
+  group_by(Type) %>% 
+  filter(Type == "Assault Rifles") %>% 
+  rename(
+    Damage_Per_Second = `DPS`
+  ) %>% 
+  mutate(Rarity = parse_character(Rarity)) %>% 
+  mutate(Rarity = factor(Rarity, levels = c("Legendary", "Epic", "Rare", "Uncommon", "Common")))
+```
+
+```{r, echo = FALSE}
+SMGData <- Fortnite_BR_Weapon_Attributes %>% 
+  group_by(Type) %>% 
+  filter(Type == "Submachine Guns") %>% 
+  rename(
+    Damage_Per_Second = `DPS`
+  ) %>% 
+  mutate(Rarity = parse_character(Rarity)) %>% 
+  mutate(Rarity = factor(Rarity, levels = c("Legendary", "Epic", "Rare", "Uncommon", "Common")))
+```
+```{r echo = FALSE}
+ShotgunData <- Fortnite_BR_Weapon_Attributes %>% 
+  group_by(Type) %>% 
+  filter(Type == "Shotguns") %>% 
+  rename(
+    Damage_Per_Second = `DPS`
+  ) %>% 
+  mutate(Rarity = parse_character(Rarity)) %>% 
+  mutate(Rarity = factor(Rarity, levels = c("Legendary", "Epic", "Rare", "Uncommon", "Common")))
+```
+```{r echo = FALSE}
+ExplosivesData <- Fortnite_BR_Weapon_Attributes %>% 
+  group_by(Type) %>% 
+  filter(Type == "Explosives") %>% 
+  rename(
+    Damage_Per_Second = `DPS`
+  ) %>% 
+  mutate(Rarity = parse_character(Rarity)) %>% 
+  mutate(Rarity = factor(Rarity, levels = c("Legendary", "Epic", "Rare", "Uncommon", "Common")))
+```
+```{r echo = FALSE}
+PistolData <- Fortnite_BR_Weapon_Attributes %>% 
+  group_by(Type) %>% 
+  filter(Type == "Pistols") %>% 
+  rename(
+    Damage_Per_Second = `DPS`
+  ) %>% 
+  mutate(Rarity = parse_character(Rarity)) %>% 
+  mutate(Rarity = factor(Rarity, levels = c("Legendary", "Epic", "Rare", "Uncommon", "Common")))
+```
+
+```{r echo = FALSE}
+SniperData <- Fortnite_BR_Weapon_Attributes %>% 
+  group_by(Type) %>% 
+  filter(Type == "Sniper Rifles") %>% 
+  rename(
+    Damage_Per_Second = `DPS`
+  ) %>% 
+  mutate(Rarity = parse_character(Rarity)) %>% 
+  mutate(Rarity = factor(Rarity, levels = c("Legendary", "Epic", "Rare", "Uncommon", "Common")))
+```
+```{r echo = FALSE}
+ARData %>%
+  ggplot(aes(x = Name, y = Damage)) +
+  geom_point(aes(size = Damage_Per_Second, color = Rarity)) +
+  guides(
+    color = guide_legend("Rarity"),
+    size = guide_legend("Damage Per Second")) +
+  ggtitle("Assault Rifles") +
+  scale_color_manual(values = c("Legendary" = "gold", "Epic" = "purple", "Rare" = "royalblue", "Uncommon" = "green", "Common" = "black"))
+```
+The assault rifles are great mid to long distance guns. On the other hand, the scoped rifle has such a low damage per second, damage, and fire rate, that it is often considered the least effective gun, at any range. The legendary scar is the most sought after weapon, multiple high attributes.
+```{r echo = FALSE}
+SMGData %>%
+  ggplot(aes(x = Name, y = Damage)) +
+  geom_point(aes(size = Damage_Per_Second, color = Rarity)) +
+  guides(
+    color = guide_legend("Rarity"),
+    size = guide_legend("Damage Per Second")) +
+
+  ggtitle("SMGs") +
+
+  ggtitle("Submachine Guns") +
+  scale_color_manual(values = c("Legendary" = "gold", "Epic" = "purple", "Rare" = "royalblue", "Uncommon" = "green", "Common" = "black"))
+```
+Submachine guns have high damage per second, and a high rate of fire. They are solid weapons at close distances, but face to face could not beat a pump shotgun as a result of their low damage. It is adventagous in that if one shot of the shotgun was to miss, it would take too long to fire again and the player could be easily downed before they are able to shoot again.
+```{r echo = FALSE}
+ShotgunData %>%
+  ggplot(aes(x = Name, y = Damage)) +
+  geom_point(aes(size = Damage_Per_Second, color = Rarity)) +
+  guides(
+    color = guide_legend("Rarity"),
+    size = guide_legend("Damage Per Second")) +
+  ggtitle("Shotguns") +
+  scale_color_manual(values = c("Legendary" = "gold", "Epic" = "purple", "Rare" = "royalblue", "Uncommon" = "green", "Common" = "black"))
+```
+Pump shotguns offer a higher single shot impact than the tactical shotgun, but lower damage per second since the tactical shotgun has a higher rate of fire. Often, two pump shotguns will be used for initial shots fired to get an extra shot in without having to pump the gun again.
+```{r echo = FALSE}
+ExplosivesData %>%
+  ggplot(aes(x = Name, y = Damage)) +
+  geom_point(aes(size = Damage_Per_Second, color = Rarity)) +
+  guides(
+    color = guide_legend("Rarity"),
+    size = guide_legend("Damage Per Second")) +
+  ggtitle("Explosives") +
+  scale_color_manual(values = c("Legendary" = "gold", "Epic" = "purple", "Rare" = "royalblue", "Uncommon" = "green", "Common" = "black"))
+```
+Grenade launchers have a higher rate of fire than rocket launchers do, giving them a higher damage per second, but sacrifices accuracy as well as range.
+```{r echo = FALSE}
+PistolData %>%
+  ggplot(aes(x = Name, y = Damage)) +
+  geom_point(aes(size = Damage_Per_Second, color = Rarity)) +
+  guides(
+    color = guide_legend("Rarity"),
+    size = guide_legend("Damage Per Second")) +
+  ggtitle("Pistols") +
+  scale_color_manual(values = c("Legendary" = "gold", "Epic" = "purple", "Rare" = "royalblue", "Uncommon" = "green", "Common" = "black"))
+```
+The revolver is close to a pistol-shotgun crossover. It has a below average fire rate, with decent damage. The pistol is much more effective at close quarters because of the fire rate, if one shot is missed there is still a high chance of follow up shots landing.
+```{r echo = FALSE}
+SniperData %>%
+  ggplot(aes(x = Name, y = Damage)) +
+  geom_point(aes(size = Damage_Per_Second, color = Rarity)) +
+  guides(
+    color = guide_legend("Rarity"),
+    size = guide_legend("Damage Per Second")) +
+  ggtitle("Snipers") +
+  ggtitle("Sniper Rifles") +
+  scale_color_manual(values = c("Legendary" = "gold", "Epic" = "purple", "Rare" = "royalblue", "Uncommon" = "green", "Common" = "black"))
+```
+The bolt-action sniper has a higher impact damage so it often only takes one shot, but the fire rate is extremely low. If the player is not highly skilled at sniping, the auto sniper is often preferred as to allow for multiple shots to be fired off.
+```{r echo = FALSE}
+FireRateplot <- Fortnite_BR_Weapon_Attributes %>%
+  rename(FR='Fire.Rate')
+
+FireRateplot%>%
+  ggplot(aes(x=Type))+
+  geom_boxplot(aes(y=FR))+
+  ylab("Shots Fired per 1 second")+
+  coord_polar()+
+  ggtitle("Fire Rate")
+```
+Fire rate is a key factor of battles of short distances, these weapons with high rates of fire have recoil that prevent them from being accurate at further distances, but deadly for mid to short engagments.
+```{r echo = FALSE}
+DPSplot <- Fortnite_BR_Weapon_Attributes%>%
+  rename(Damage_Per_Second = 'DPS')
+
+DPSplot%>%
+  ggplot(aes(x=Type))+
+  geom_boxplot(aes(y=Damage_Per_Second))+
+  ylab("Hit Point Value")+
+  coord_polar()+
+  ggtitle("Damage Per Second")
+```
+Submachine guns have the highest damage per second, making them the most dangerous weapons in the game, but are often overlooked because of lack of range. Pistols have a large range of damage per second since a revolver has a high single shot damage, giving it a low damage per second, and the regular pistol’s damage is low with a semi automatic firing capacity. Guns with high damage per second require the user to be consistent and adjust to the recoil of the weapons. Using a weapon of low damage per second requires them to be highly efficient with each of the shots they are able to take since they have low rates of fir
+
+```{r echo = FALSE}
+ReloadTplot <- Fortnite_BR_Weapon_Attributes %>%
+  rename(RLDTime='Reload.Time')
+
+ReloadTplot%>%
+  ggplot(aes(x=Type))+
+  geom_boxplot(aes(y=1/RLDTime))+
+  ylab("Inverse of Reload Time")+
+  coord_polar()+
+  ggtitle("Fastest Reload Time")
+```
+While in close quarter combat, it is advantageous to be able to reload quickly. Weapons like the shotgun and the pistol are frequently used in this situation. The shotgun has an incredibly low reload rate, and once engaged in a fight, it is unlikely to find time to reload.
+
+```{r echo = FALSE}
+Damageplot <- Fortnite_BR_Weapon_Attributes %>%
+  rename(damage = `Damage`)
+
+Damageplot %>% 
+  ggplot(aes(x=Type))+
+  geom_boxplot(aes(y=damage))+
+  ylab("Hit Point Value")+
+  coord_polar()+
+  ggtitle("Damage Per Shot")
+```
+While submachine guns have the highest damage per second, at the same time, they have the lowest damage per shot. This is a result of how high their fire rate is. Often not used by players because of recoil, but as a short-mid distance gun it is very effective. Explosives and snipers have the highest damage per shot and as a result have a low rate of fire, giving them low damage per second. 
